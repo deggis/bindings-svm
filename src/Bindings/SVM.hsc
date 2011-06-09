@@ -72,7 +72,7 @@ module Bindings.SVM where
 #ccall svm_cross_validation , Ptr <svm_problem> -> Ptr <svm_parameter> -> CInt -> Ptr CDouble -> IO ()
 
 -- saving models
-#ccall svm_save_model , CString -> Ptr <svm_model> -> IO ()
+#ccall svm_save_model , CString -> Ptr <svm_model> -> IO CInt
 
 -- loading models
 #ccall svm_load_model , CString -> IO (Ptr <svm_model>)
@@ -89,7 +89,8 @@ module Bindings.SVM where
 #ccall svm_predict_probability , Ptr <svm_model> -> Ptr <svm_node> -> Ptr CDouble -> IO CDouble
 
 -- destroying
-#ccall svm_destroy_model , Ptr <svm_model> -> IO ()
+#ccall svm_free_model_content , Ptr <svm_model> -> IO ()
+#ccall svm_free_and_destroy_model , Ptr <svm_model> -> IO ()
 #ccall svm_destroy_param , Ptr <svm_parameter> -> IO ()
 
 -- checking
@@ -97,4 +98,4 @@ module Bindings.SVM where
 #ccall svm_check_probability_model , Ptr <svm_model> -> IO CInt
 
 -- printing
-#ccall svm_print_string , FunPtr (CString -> IO ())
+#ccall svm_set_print_string_function , FunPtr (CString -> IO ())
